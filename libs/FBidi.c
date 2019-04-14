@@ -51,7 +51,7 @@ char *FBidiConvert(
 	FriBidiChar *visual_unicode_str;
 	FriBidiParType pbase_dir = FRIBIDI_TYPE_ON;
 	FriBidiStrIndex *pos_l_to_v;
-	int i;
+	int i, loglevel;
 
 	if (logical_str == NULL || charset == NULL)
 	{
@@ -86,9 +86,12 @@ char *FBidiConvert(
 	/* also keep track of how characters are reordered here, to reorder
 	   combing characters accordingly */
 	pos_l_to_v = xmalloc((str_len + 1) * sizeof(FriBidiStrIndex));
-	fribidi_log2vis(
+	loglevel = fribidi_log2vis(
 		logical_unicode_str, str_len, &pbase_dir,
 		visual_unicode_str, pos_l_to_v, NULL, NULL);
+
+	if (loglevel == 0)
+		return (NULL);
 
 	/* remap mapping from logical to visual to "compensate" for BIDI */
 	if (comb_chars != NULL)

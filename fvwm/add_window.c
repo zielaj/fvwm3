@@ -575,9 +575,7 @@ static char *interpolate_titleformat_name(
 	const char *format;
 	int count;
 
-	/* MAX_WINDOW_NAME_NUMBER is defined as "999" -- that's three
-	 * characters maximum.  win_name_len must be 1 larger for null.
-	 */
+	char no_of_wins[4096];
 	char win_name_len[MAX_WINDOW_NAME_NUMBER_DIGITS+1];
 	char w_id[12];
 
@@ -690,7 +688,7 @@ static char *interpolate_titleformat_name(
 				if (count > (MAX_WINDOW_NAME_NUMBER - 1))
 					count = MAX_WINDOW_NAME_NUMBER - 1;
 
-				sprintf(win_name_len, "%d", ++count);
+				sprintf(no_of_wins, "%d", ++count);
 				strcat(stringbuf, win_name_len);
 				break;
 			case 'I':

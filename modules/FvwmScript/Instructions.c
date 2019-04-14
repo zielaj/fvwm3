@@ -360,7 +360,7 @@ static char *FuncGetOutput(int *NbArg, long *TabArg)
       n = fread(BufCom,1,maxsize,f);
       (void)n;
       pclose(f);
-      strncpy(Command,cmndbuf,255);
+      strncpy(Command,cmndbuf,sizeof(Command));
       TimeCom=time(NULL);
     }
   }
