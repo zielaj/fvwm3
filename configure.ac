@@ -17,6 +17,7 @@ AC_INIT([fvwm3],
 	m4_esyscmd_s([utils/fvwm-version-str.sh]),
 	[fvwm-workers@fvwm.org])
 AC_CONFIG_AUX_DIR(etc)
+AC_CONFIG_LIBOBJ_DIR(libs)
 AM_INIT_AUTOMAKE([foreign subdir-objects])
 AM_SILENT_RULES([yes])
 AM_CONFIG_HEADER(config.h)
@@ -122,6 +123,11 @@ AC_SUBST(FVWM_DATADIR)
 AC_SUBST(FVWM_PERLLIBDIR)
 AC_SUBST(FVWM_CONFDIR)
 AC_SUBST(FVWM_DOCDIR)
+
+# Check for compatiblity for missing implementations.
+AC_REPLACE_FUNCS([ \
+    asprintf \
+])
 
 AH_TEMPLATE([FVWM_CONFIG],
   [Name of config filenames in FVWM_USERDIR and FVWM_DATADIR])
@@ -1593,6 +1599,13 @@ do { void *p; p = (void *)&x; (void)p; } while (0);
 #ifndef HAVE_STRLCPY
 #   include "libs/strlcpy.h"
 #endif
+
+#ifndef HAVE_ASPRINTF
+int	asprintf(char **, const char *, ...);
+int     vasprintf(char **, const char *, va_list);
+#endif
+
+#include "libs/log.h"
 ])
 
 # mainly for fvwm-config

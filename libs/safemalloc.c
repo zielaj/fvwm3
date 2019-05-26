@@ -16,9 +16,12 @@
 
 #include <stdio.h>
 #include <stdint.h>
+#include <stdarg.h>
 #include <err.h>
+#include <errno.h>
 #include <sys/param.h>
 #include <stdint.h>
+
 #include "safemalloc.h"
 
 void *
@@ -80,4 +83,32 @@ xstrdup(const char *s)
 	strlcpy(ptr, s, len);
 
 	return (ptr);
+}
+
+int
+xasprintf(char **ret, const char *fmt, ...)
+{
+	va_list ap;
+	int i;
+
+	va_start(ap, fmt);
+	i = xvasprintf(ret, fmt, ap);
+	va_end(ap);
+
+	return (i);
+}
+
+int
+xvasprintf(char **ret, const char *fmt, va_list ap)
+{
+	int i;
+
+	i = vasprintf(ret, fmt, ap);
+
+	if (i < 0 || *ret == NULL) {
+		fprintf(stderr, "xasprintf: %s", strerror(errno));
+		exit (1);
+	}
+
+	return (i);
 }
