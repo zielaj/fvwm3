@@ -1682,6 +1682,7 @@ dnl
 	modules/FvwmScript/Makefile
 	modules/FvwmScript/Scripts/Makefile
 	modules/FvwmScript/Widgets/Makefile
+	modules/FvwmShell/Makefile
 )
 
 # ---------------------------------------------------------------------------
